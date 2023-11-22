@@ -6,8 +6,12 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-st.set_page_config(page_title="WeChat Article Reader - Open Source", layout="wide")
-st.title("WeChat Article Reader")
+st.set_page_config(page_title="WeChat Article AI Assistant - Open Source Version", layout="wide")
+st.subheader("Welcome to Open WeChat Article AI Assistant: Life Enhancing with AI!")
+st.write("Important notice: This Open WeChat Article AI Assistant is offered for information and study purpose only and by no means for any other use. Any user should never interact with the AI Assistant in any way that is against any related promulgated regulations. The user is the only entity responsible for interactions taken between the user and the AI Chat Assistant.")
+css_file = "main.css"
+with open(css_file) as f:
+    st.markdown("<style>{}</style>".format(f.read()), unsafe_allow_html=True)  
 
 current_datetime_0= datetime.datetime.now()
 print(f"Anything happens, this ST app will execute from top down. @ {current_datetime_0}")
