@@ -25,6 +25,11 @@ print()
 
 # 当用户点击按钮时
 if st.button('Get AI Response'):
+    # 检查 URL 是否以 "https://mp.weixin.qq.com" 开始
+    if not url.startswith("https://mp.weixin.qq.com"):
+        # 如果不是，则显示错误信息并终止程序
+        st.write("URL is incorrect. Please enter a URL that starts with 'https://mp.weixin.qq.com'.")
+        st.stop()    
     if url and question:
         print(f"URL & Question Entered & Button clicked.")
         print()
@@ -62,10 +67,11 @@ if st.button('Get AI Response'):
                 print(f'获取API调用结果完毕，共耗时： @ {end_2 - start_2}') 
                 print()
                 print("AI Response:", ai_response)
-                print("AI Response:", ai_response_output)    
+                #print("AI Response:", ai_response_output)    
                 print()
-                st.write("AI Response:", ai_response)
-                st.write("AI Response:", ai_response_output)
+                #st.write("AI Response:", ai_response)
+                st.write("AI Response:")
+                st.write(ai_response_output)
             else:
                 # 显示错误信息
                 st.error("Error in fetching response from AI server.")
