@@ -2,16 +2,18 @@ import streamlit as st
 import requests
 import timeit
 import datetime
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-st.set_page_config(page_title="AI Chat Client", layout="wide")
-st.title("AI Chat Client")
+st.set_page_config(page_title="WeChat Article Reader - Open Source", layout="wide")
+st.title("WeChat Article Reader")
 
 current_datetime_0= datetime.datetime.now()
 print(f"Anything happens, this ST app will execute from top down. @ {current_datetime_0}")
 print()
 
-# FastAPI 服务器的 URL
-fastapi_server_url = "https://binqiangliu-wechatarticleloaderfastapi.hf.space/get_ai_response"
+HUGGINGFACEHUB_API_TOKEN = os.getenv("HUGGINGFACEHUB_API_TOKEN")
 
 # 用户输入
 url = st.text_input("Enter the URL to chat with:")
@@ -28,13 +30,21 @@ if st.button('Get AI Response'):
         print()
         with st.spinner('Fetching AI response...'):
             # 构造请求
+            # FastAPI 服务器的 URL
+            fastapi_server_url = "https://binqiangliu-wechatarticleloaderfastapi.hf.space/get_ai_response"
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"
+                #保险起见，建议始终采用f''的形式以及配合使用{}
+            }
             data = {"url": url, "question": question}
             # 发送请求到 FastAPI 服务器
             current_datetime_0 = datetime.datetime.now()
             print(f'API调用请求发送开始 @ {current_datetime_0}')   
             print()
             start_1 = timeit.default_timer() # Start timer               
-            response = requests.post(fastapi_server_url, json=data)                       
+            #response = requests.post(fastapi_server_url, json=data)   
+            response = requests.post(fastapi_server_url, headers=headers, json=data)            
             end_1 = timeit.default_timer() # Start timer   
             print(f'API调用请求发送结束，共耗时： @ {end_1 - start_1}')  
             print()
@@ -52,9 +62,9 @@ if st.button('Get AI Response'):
                 print(f'获取API调用结果完毕，共耗时： @ {end_2 - start_2}') 
                 print()
                 print("AI Response:", ai_response)
-                #print("AI Response:", ai_response_output)    
+                print("AI Response:", ai_response_output)    
                 print()
-                #st.write("AI Response:", ai_response)
+                st.write("AI Response:", ai_response)
                 st.write("AI Response:", ai_response_output)
             else:
                 # 显示错误信息
